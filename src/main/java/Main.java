@@ -1,17 +1,15 @@
-import exceptions.NegativeInputFunds;
-import exceptions.NotEnoughFundsException;
-import personas.Cliente;
-import productos.Cuenta;
-import productos.Movimientos;
-import utils.Banca;
-import utils.CalificacionRiesgo;
-import utils.TipoCuenta;
-import utils.db.DBConnection;
+import com.banquito.banquitoApp.exceptions.NegativeInputFunds;
+import com.banquito.banquitoApp.exceptions.NotEnoughFundsException;
+import com.banquito.banquitoApp.models.personas.Cliente;
+import com.banquito.banquitoApp.models.productos.Cuenta;
+import com.banquito.banquitoApp.models.productos.Movimientos;
+import com.banquito.banquitoApp.utils.operaciones.Banca;
+import com.banquito.banquitoApp.utils.operaciones.CalificacionRiesgo;
+import com.banquito.banquitoApp.utils.operaciones.TipoCuenta;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -22,7 +20,7 @@ public class Main {
 //        Banca sucursal = new Banca();
 //        menuBanquito(titular, sucursal);
 
-        testOperaciones();
+       // testOperaciones();
     /*        try {
 
             sucursal.depositar(juan.getCuentas().get(0), 100);
@@ -182,12 +180,12 @@ public class Main {
     private static void retirarTest(Banca sucursal, Cliente cliente, int cuentaId, double cantidad){
         try {
             System.out.println("Balance antes de retirar");
-            System.out.println(cliente.getCuenta(cuentaId).getBalance());
+            System.out.println(sucursal.consultarBalance(cliente.getCuenta(cuentaId)));
 
             sucursal.retirar(cliente.getCuenta(cuentaId), cantidad);
 
             System.out.println("Retiro Aceptado");
-            System.out.println(cliente.getCuenta(cuentaId).getBalance());
+            System.out.println(sucursal.consultarBalance(cliente.getCuenta(cuentaId)));
         }catch (NegativeInputFunds e){
             System.out.println(e.getMessage());
         }catch (NotEnoughFundsException e){
