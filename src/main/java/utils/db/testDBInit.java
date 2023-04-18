@@ -12,10 +12,22 @@ public class testDBInit {
     public static void init() throws ClassNotFoundException {
 
         //Creamos la carga del Driver
-        /// Class.forName("org.h2.Driver");
+        //Class.forName("org.h2.Driver");
 
         //Habilitamos y creamos una conexion hacia la base de datos
         Connection connection = DBConnection.getConnection();
+
+        try(Statement statement = connection.createStatement()) {
+            statement.execute(getMovimientosTruncate());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        try(Statement statement = connection.createStatement()) {
+            statement.execute(getCuentasTruncate());
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
         try(Statement statement = connection.createStatement()) {
             statement.execute(getCustomersTruncate());
@@ -29,14 +41,18 @@ public class testDBInit {
             e.printStackTrace();
         }
 
+
+
         try(Statement statement = connection.createStatement()) {
-            statement.execute(getCuentasTruncate());
+            statement.execute(getCuentasCreateQuery());
         }catch (SQLException e){
             e.printStackTrace();
         }
 
+
         try(Statement statement = connection.createStatement()) {
-            statement.execute(getCuentasCreateQuery());
+            System.out.println("Creating table movimientos");
+            statement.execute(getMovimientosCreateQuery());
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -46,12 +62,12 @@ public class testDBInit {
     }
 
     private static String getCustomersCreateQuery(){
-        return "CREATE TABLE IF NOT EXISTS customers (\n" +
-                "\tCEDULA LONG NOT NULL PRIMARY KEY,\n" +
+        return "CREATE TABLE IF NOT EXISTS clientes (" +
+                "\tCEDULA BIGINT NOT NULL PRIMARY KEY,\n" +
                 "\tNOMBRE varchar(255) NOT NULL,\n" +
-                "\tAPELLIDP varchar(255) NOT NULL,\n" +
-                "\tFECHA_NACIMIENTO date NOT NULL\n" +
-                "\testatusTrabajo boolean NOT NULL\n" +
+                "\tAPELLIDO varchar(255) NOT NULL,\n" +
+                "\tFECHA_NACIMIENTO DATE NOT NULL,\n" +
+                "\testatusTrabajo boolean NOT NULL,\n" +
                 "\tnivelRiesgo ENUM('AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'D', 'F')\n" +
                 ");";
     }
@@ -61,13 +77,28 @@ public class testDBInit {
     }
     private static String getCuentasCreateQuery(){
         return "CREATE TABLE IF NOT EXISTS cuentas (\n" +
-                "\tID_CUENTA IDENTITY NOT NULL AUTO INCREMENT PRIMARY KEY,\n" +
+                "\tID_CUENTA IDENTITY PRIMARY KEY NOT NULL,\n" +
                 "\tTIPO_CUENTA ENUM('Ahorro','Corriente','PlazoFijo') NOT NULL,\n" +
                 "\tBALANCE DOUBLE NOT NULL,\n" +
                 "\tMOV_INTEREST INT NOT NULL,\n" +
-                "\tMOV_MANTENIMIENTO INT NOT NULL\n" +
-                "\tCEDULA_TITULAR LONG NOT NULL \n" +
-                "\tCONSTRAINT FK_CLIENTE_CEDULA foreign key(CEDULA_TITULAR) references CUENTAS(CEDULA)\n" +
+                "\tMOV_MANTENIMIENTO INT NOT NULL,\n" +
+                "\tCEDULA_TITULAR BIGINT NOT NULL, \n" +
+                "\tCONSTRAINT FK_CLIENTE_CEDULA foreign key(CEDULA_TITULAR) references CLIENTES(CEDULA)\n" +
+                ");";
+    }
+
+    private static String getMovimientosTruncate(){
+        return "DROP TABLE IF EXISTS movimientos;";
+    }
+    private static String getMovimientosCreateQuery(){
+        return "CREATE TABLE IF NOT EXISTS movimientos (" +
+                "\tID_MOVIMIENTO BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,\n" +
+                "\tTIPO_MOVIMIENTO varchar(255) NOT NULL,\n" +
+                "\tESTADO varchar(255) NOT NULL,\n" +
+                "\tFECHA DATE NOT NULL,\n" +
+                "\tHORA TIME NOT NULL,\n" +
+                "\tID_CUENTA BIGINT NOT NULL, \n" +
+                "\tCONSTRAINT FK_CUENTA_ID foreign key(ID_CUENTA) references CUENTAS(ID_CUENTA)\n" +
                 ");";
     }
 }

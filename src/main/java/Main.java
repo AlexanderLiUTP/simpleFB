@@ -2,6 +2,7 @@ import exceptions.NegativeInputFunds;
 import exceptions.NotEnoughFundsException;
 import personas.Cliente;
 import productos.Cuenta;
+import productos.Movimientos;
 import utils.Banca;
 import utils.CalificacionRiesgo;
 import utils.TipoCuenta;
@@ -11,15 +12,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+//
+//        Cliente titular = crearCliente();
+//        Banca sucursal = new Banca();
+//        menuBanquito(titular, sucursal);
 
-        Cliente titular = crearCliente();
-        Banca sucursal = new Banca();
-        menuBanquito(titular, sucursal);
-
-
+        testOperaciones();
     /*        try {
 
             sucursal.depositar(juan.getCuentas().get(0), 100);
@@ -63,11 +66,11 @@ public class Main {
 
     private static void testOperaciones(){
         Banca sucursal = new Banca();
-        Cliente juan = new Cliente("3-456-898", "Juan", "Gonzalez", "1998-05-25", true);
-        Cliente albert = new Cliente("6-156-2598", "Albert", "Fernandez", "1982-07-15", true);
-        Cliente mike = new Cliente("8-956-2002", "Mike", "Sanchez", "2008-01-15", true);
-        Cliente rodolf = new Cliente("1-756-9058", "Rodolf", "Smith", "1998-05-25", true);
-        Cliente bernando = new Cliente("5-302-6898", "Bernando", "Martinez", "1998-05-25", true, CalificacionRiesgo.C);
+        Cliente juan = new Cliente(3456898, "Juan", "Gonzalez", "1998-05-25", true);
+        Cliente albert = new Cliente(61562598, "Albert", "Fernandez", "1982-07-15", true);
+        Cliente mike = new Cliente(89562002, "Mike", "Sanchez", "2008-01-15", true);
+        Cliente rodolf = new Cliente(17569058, "Rodolf", "Smith", "1998-05-25", true);
+        Cliente bernando = new Cliente(53026898, "Bernando", "Martinez", "1998-05-25", true, CalificacionRiesgo.C);
 
 
         System.out.println("TC-C01");
@@ -131,6 +134,10 @@ public class Main {
         System.out.println("TC-OP06");
         System.out.println("Transaccion entre cuentas falta de fondo");
         transacEntreCuentas(sucursal, rodolf, 1, 2, 20000);
+
+        Map<LocalDateTime, Movimientos> historial = sucursal.obtenerMovimientos(juan.getCuenta(1));
+
+        historial.forEach((date, mov)-> System.out.println(mov));
     }
     private static void crearAhorro(Banca sucursal, Cliente clienteTest) {
         if (sucursal.abirCuenta(clienteTest, TipoCuenta.Ahorro, 500)) {
@@ -240,7 +247,7 @@ public class Main {
         System.out.println("¿Cuál es su apellido?");
         String clientLastName = bf.readLine();
         System.out.println("Cedula");
-        String cedula = bf.readLine();
+        long cedula = Long.parseLong(bf.readLine());
         System.out.println("Fecha de naciminto (aaaa-mm-dd)");
         String dob = bf.readLine();
         System.out.println("¿Trabaja? Si/No");

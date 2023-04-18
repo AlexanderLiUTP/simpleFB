@@ -14,7 +14,7 @@ public interface IOperaciones {
     <T extends Cuenta> boolean transferenciaEntrecuentas(T cuentaEmisor, T cuentaReceptor, double cantidadTransferir);
     <T extends Cuenta> Double consultarBalance(T cuenta);
 
-    <T extends Cuenta> Map obtenerHistorial(T cuenta);
+    <T extends Cuenta> Map obtenerMovimientos(T cuenta);
 
 
 }

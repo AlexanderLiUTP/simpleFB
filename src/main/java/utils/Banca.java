@@ -21,18 +21,18 @@ public class Banca implements IOperaciones {
             return false;
         }
         if (cantidad < 0){
-            agregarHistorial("Retiro", "Rechazado", cuenta );
+            agregarMovimientos("Retiro", "Rechazado", cuenta );
             throw new NegativeInputFunds();
 
         }
         if(!fondosSuficiente(cuenta, cantidad)){
-            agregarHistorial("Retiro", "Rechazado", cuenta );
+            agregarMovimientos("Retiro", "Rechazado", cuenta );
             throw new NotEnoughFundsException();
 
         }
         cuenta.setBalance(cuenta.getBalance() - cantidad);
         operacionesMovimiento(cuenta);
-        agregarHistorial("Retiro", "Aceptado", cuenta );
+        agregarMovimientos("Retiro", "Aceptado", cuenta );
         return true;
     }
 
@@ -41,11 +41,11 @@ public class Banca implements IOperaciones {
         if (cantidad > 0){
             cuenta.setBalance(cuenta.getBalance() + cantidad);
             operacionesMovimiento(cuenta);
-            agregarHistorial("Deposito", "Aceptado", cuenta );
+            agregarMovimientos("Deposito", "Aceptado", cuenta );
 
             return true;
         }
-        agregarHistorial("Deposito", "Rechazado", cuenta );
+        agregarMovimientos("Deposito", "Rechazado", cuenta );
         throw new NegativeInputFunds();
     }
 
@@ -72,20 +72,20 @@ public class Banca implements IOperaciones {
     }
 
     @Override
-    public <T extends Cuenta> Map obtenerHistorial(T cuenta) {
-        return cuenta.getHistorial();
+    public <T extends Cuenta> Map obtenerMovimientos(T cuenta) {
+        return cuenta.getMovimientos();
     }
 
     private <T extends Cuenta> boolean fondosSuficiente(T cuenta, double valor){
         return cuenta.getBalance()>valor;
     }
 
-    private <T extends Cuenta> void agregarHistorial(String tipoMov, String estado, T cuenta){
+    private <T extends Cuenta> void agregarMovimientos(String tipoMov, String estado, T cuenta){
         LocalDateTime dateTimeNow = LocalDateTime.now();
-        Historial historial = new Historial(tipoMov, estado, dateTimeNow.toLocalDate(), dateTimeNow.toLocalTime());
-        Map<LocalDateTime, Historial> entryHistorial = new TreeMap<>();
-        entryHistorial.put(dateTimeNow, historial);
-        cuenta.setHistorial(entryHistorial);
+        Movimientos historial = new Movimientos(1,tipoMov, estado, dateTimeNow.toLocalDate(), dateTimeNow.toLocalTime(),cuenta.getId());
+        Map<LocalDateTime, Movimientos> entryMovimientos = new TreeMap<>();
+        entryMovimientos.put(dateTimeNow, historial);
+        cuenta.setMovimientos(entryMovimientos);
     }
 
 
@@ -104,7 +104,7 @@ public class Banca implements IOperaciones {
 
         switch (tipoCuenta){
             case Ahorro -> {
-                CuentaAhorro nuevaCuenta = new CuentaAhorro(generarId(),montoInicial, titular);
+                CuentaAhorro nuevaCuenta = new CuentaAhorro(generarId(),montoInicial, titular.getCedula());
                 titular.setCuentas(nuevaCuenta);
 
                 return true;
@@ -114,7 +114,7 @@ public class Banca implements IOperaciones {
                     System.out.println("Mal historial de credito. Cuenta Corriente no abierta.");
                     return false;
                 }
-                CuentaCorriente nuevaCuenta = new CuentaCorriente(generarId(),montoInicial, titular);
+                CuentaCorriente nuevaCuenta = new CuentaCorriente(generarId(),montoInicial, titular.getCedula());
                 titular.setCuentas(nuevaCuenta);
                 return true;
             }
@@ -123,7 +123,7 @@ public class Banca implements IOperaciones {
                     System.out.println("Mal historial de credito. Cuenta de Plazo Fijo no abierta.");
                     return false;
                 }
-                CuentaPlazoFijo nuevaCuenta = new CuentaPlazoFijo(generarId(), montoInicial,titular);
+                CuentaPlazoFijo nuevaCuenta = new CuentaPlazoFijo(generarId(), montoInicial,titular.getCedula());
                 titular.setCuentas(nuevaCuenta);
 
                 return true;

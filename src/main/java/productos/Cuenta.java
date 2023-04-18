@@ -7,30 +7,44 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
-import utils.TipoCuenta;
-import personas.Cliente;
-public abstract class Cuenta implements Serializable {
 
-    private final int id;
+public class Cuenta implements Serializable {
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    private long id;
     private TipoCuenta tipoCuenta;
     private double balance;
-    private Map<LocalDateTime, Historial> historial = new TreeMap<>();
+    private Map<LocalDateTime, Movimientos> historial = new TreeMap<>();
     private int movInterest= 0;
     private int movMan = 0;
     private int MAX_MOV_MAN = 4;
     private int MAX_MOV_INTEREST = 6;
     private Cliente titular;
 
-    public Cuenta(int id, double balance, Cliente titular){
-        this.id = id;
-        this.balance = balance;
-        this.titular = titular;
+    public long getCedulaTitular() {
+        return cedulaTitular;
     }
-    public Cuenta(int id, double balance, Cliente titular, TipoCuenta tipoCuenta){
+
+    public void setCedulaTitular(long cedulaTitular) {
+        this.cedulaTitular = cedulaTitular;
+    }
+
+    private long cedulaTitular;
+    public Cuenta(){
+        super();
+    }
+    public Cuenta(int id, double balance, long cedulaTitular){
         this.id = id;
         this.balance = balance;
-        this.titular = titular;
+        this.cedulaTitular = cedulaTitular;
+    }
+    public Cuenta(int id, double balance, long cedulaTitular, TipoCuenta tipoCuenta){
+        this.id = id;
+        this.balance = balance;
+        this.cedulaTitular = cedulaTitular;
         this.tipoCuenta = tipoCuenta;
     }
 
@@ -57,7 +71,7 @@ public abstract class Cuenta implements Serializable {
         return false;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -77,11 +91,11 @@ public abstract class Cuenta implements Serializable {
         this.balance = balance;
     }
 
-    public Map<LocalDateTime, Historial> getHistorial() {
+    public Map<LocalDateTime, Movimientos> getMovimientos() {
         return historial;
     }
 
-    public void setHistorial(Map<LocalDateTime, Historial> historial) {
+    public void setMovimientos(Map<LocalDateTime, Movimientos> historial) {
         this.historial.putAll(historial);
     }
 
@@ -121,7 +135,7 @@ public abstract class Cuenta implements Serializable {
                 "id=" + this.id +
                 ", tipoCuenta=" + this.tipoCuenta +
                 ", balance=" + this.balance +
-                ", titular=" + this.titular.getNombre() +" " +this.titular.getApellido() +
+                ", cedula=" + this.cedulaTitular+
                 '}';
     }
 }

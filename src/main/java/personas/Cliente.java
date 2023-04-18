@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Cliente implements Serializable {
 
-    private final String cedula;
+    private long cedula;
     private String nombre;
     private String apellido;
     private LocalDate fechaNacimiento;
@@ -18,7 +18,10 @@ public class Cliente implements Serializable {
     private CalificacionRiesgo nivelRiesgo = CalificacionRiesgo.B;
     private List cuentas = new ArrayList<>();
 
-    public Cliente(String cedula, String nombre, String apellido, String fechaNacimiento, boolean estatusTrabajo){
+    public Cliente(){
+
+    }
+    public Cliente(long cedula, String nombre, String apellido, String fechaNacimiento, boolean estatusTrabajo){
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -28,7 +31,7 @@ public class Cliente implements Serializable {
 
 
 
-    public Cliente(String cedula, String nombre, String apellido,
+    public Cliente(long cedula, String nombre, String apellido,
                    String fechaNacimiento, boolean estatusTrabajo, CalificacionRiesgo riesgo){
         this.cedula = cedula;
         this.nombre = nombre;
@@ -38,7 +41,7 @@ public class Cliente implements Serializable {
         this.nivelRiesgo = riesgo;
     }
 
-    public String getCedula() {
+    public long getCedula() {
         return cedula;
     }
 
@@ -66,8 +69,8 @@ public class Cliente implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getEstatusTrabajo() {
-        return estatusTrabajo ? "Trabajando": "Desempleado";
+    public boolean getEstatusTrabajo() {
+        return estatusTrabajo;
     }
 
     public void setEstatusTrabajo(boolean estatusTrabajo) {
@@ -113,5 +116,9 @@ public class Cliente implements Serializable {
                 ", nivelRiesgo=" + nivelRiesgo +
                 ", cuentas=" + cuentas +
                 '}';
+    }
+
+    public void setCedula(long cedula) {
+        this.cedula = cedula;
     }
 }
