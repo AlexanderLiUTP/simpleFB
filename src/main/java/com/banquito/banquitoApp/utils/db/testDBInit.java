@@ -91,8 +91,8 @@ public class testDBInit {
         return "DROP TABLE IF EXISTS movimientos;";
     }
     private static String getMovimientosCreateQuery(){
-        return "CREATE TABLE IF NOT EXISTS movimientos (" +
-                "\tID_MOVIMIENTO BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,\n" +
+        return  "CREATE TABLE IF NOT EXISTS movimientos (" +
+                "\tID_MOVIMIENTO BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,\n" +
                 "\tTIPO_MOVIMIENTO varchar(255) NOT NULL,\n" +
                 "\tESTADO varchar(255) NOT NULL,\n" +
                 "\tFECHA DATE NOT NULL,\n" +

@@ -82,7 +82,13 @@ public class Banca implements IOperaciones {
 
     private <T extends Cuenta> void agregarMovimientos(String tipoMov, String estado, T cuenta){
         LocalDateTime dateTimeNow = LocalDateTime.now();
-        Movimientos historial = new Movimientos(1,tipoMov, estado, dateTimeNow.toLocalDate(), dateTimeNow.toLocalTime(),cuenta.getId());
+        Movimientos historial = new Movimientos();
+                //(tipoMov, estado, dateTimeNow.toLocalDate(), dateTimeNow.toLocalTime(),cuenta.getId());
+        historial.setTipoMovimiento(tipoMov);
+        historial.setEstado(estado);
+        historial.setFecha(dateTimeNow.toLocalDate());
+        historial.setHora(dateTimeNow.toLocalTime());
+        historial.setCuentaId(cuenta.getId());
         Map<LocalDateTime, Movimientos> entryMovimientos = new TreeMap<>();
         entryMovimientos.put(dateTimeNow, historial);
         cuenta.setMovimientos(entryMovimientos);

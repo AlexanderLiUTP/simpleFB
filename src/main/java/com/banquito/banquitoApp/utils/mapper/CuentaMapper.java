@@ -28,10 +28,9 @@ public class CuentaMapper implements BaseMapper<Cuenta> {
     }
     public Cuenta fromJSON(Map<String, Object> json){
         Cuenta cuenta = new Cuenta();
-        if (json.get("cuantaId")!=null){
-            cuenta.setId((int) json.get("cuantaId"));
+        if (json.get("cuentaId")!=null){
+            cuenta.setId((int) json.get("cuentaId"));
         }
-        cuenta.setId((int) json.get("cuantaId"));
         cuenta.setTipoCuenta(TipoCuenta.valueOf((String) json.get("tipoCuenta")));
         cuenta.setBalance((double) json.get("balance"));
         cuenta.setCedulaTitular((int) json.get("cedulaTitular"));

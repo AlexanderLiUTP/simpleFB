@@ -27,11 +27,11 @@ public class MovimientoDao implements CrudDao<Movimientos, Long>{
         String insertUserQuery = "INSERT INTO MOVIMIENTOS (TIPO_MOVIMIENTO, ESTADO, FECHA, HORA, ID_CUENTA) VALUES (?,?,?,?,?)";
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(insertUserQuery)){
-            preparedStatement.setString(1,model.tipoMovimiento());
-            preparedStatement.setString(2,model.estado());
-            preparedStatement.setDate(3, Date.valueOf(model.fecha()));
-            preparedStatement.setTime(4,Time.valueOf(model.hora()));
-            preparedStatement.setLong(5,model.cuentaId());
+            preparedStatement.setString(1,model.getTipoMovimiento());
+            preparedStatement.setString(2,model.getEstado());
+            preparedStatement.setDate(3, Date.valueOf(model.getFecha()));
+            preparedStatement.setTime(4,Time.valueOf(model.getHora()));
+            preparedStatement.setLong(5,model.getCuentaId());
             preparedStatement.executeUpdate();
             return completed;
         }catch (SQLException e ){
@@ -73,15 +73,15 @@ public class MovimientoDao implements CrudDao<Movimientos, Long>{
     }
 
     @Override
-    public Movimientos
-    update(Movimientos model) {
-        String updateMovimientosQuery = "UPDATE MOVIMIENTOS SET TIPO_MOVIMIENTO = ? , ESTADO = ? , FECHA = ?, HORA = ? WHERE ID_MOVIMIENTO = ?";
+    public Movimientos update(Movimientos model) {
+        String updateMovimientosQuery = "UPDATE MOVIMIENTOS SET TIPO_MOVIMIENTO = ? , ESTADO = ? , FECHA = ?, HORA = ?, ID_CUENTA=? WHERE ID_MOVIMIENTO = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(updateMovimientosQuery)){
-            preparedStatement.setString(1,model.tipoMovimiento());
-            preparedStatement.setString(2,model.estado());
-            preparedStatement.setDate(3,Date.valueOf(model.fecha()));
-            preparedStatement.setTime(4,Time.valueOf(model.hora()));
-            preparedStatement.setLong(5,model.id());
+            preparedStatement.setString(1,model.getTipoMovimiento());
+            preparedStatement.setString(2,model.getEstado());
+            preparedStatement.setDate(3,Date.valueOf(model.getFecha()));
+            preparedStatement.setTime(4,Time.valueOf(model.getHora()));
+            preparedStatement.setLong(5,model.getCuentaId());
+            preparedStatement.setLong(6,model.getId());
             preparedStatement.executeUpdate();
         }catch (SQLException e ){
             e.printStackTrace();

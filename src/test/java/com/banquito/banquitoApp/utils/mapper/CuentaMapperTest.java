@@ -17,7 +17,7 @@ class CuentaMapperTest {
         CuentaMapper cuentaMapper = new CuentaMapper();
         Cuenta cuenta = new Cuenta(2,  5120.25, 27452200, TipoCuenta.Ahorro);
         Map<String, Object> json = new HashMap<>();
-        json.put("cuantaId", 2);
+        json.put("cuentaId", 2);
         json.put("tipoCuenta", "Ahorro");
         json.put("balance", 5120.25);
         json.put("cedulaTitular", 27452200);

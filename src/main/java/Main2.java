@@ -61,13 +61,9 @@ public class Main2 {
         cliente.forEach(System.out::println);
         movimientos.forEach(System.out::println);
         Movimientos mov = movimientos.get(0);
-        long movId = mov.id();
-        String tipoMov = "Deposito";
-        String estado = mov.estado();
-        LocalDate date = mov.fecha();
-
-
-        movimientoDao.update(new Movimientos(movId, tipoMov, estado, date, mov.hora(), mov.cuentaId()));
+        mov.setTipoMovimiento("Deposito");
+        System.out.println(mov);
+        movimientoDao.update(mov);
         movimientos = movimientoDao.findAll();
 
         Cuenta cuentaUpdate = cuentas.get(0);
@@ -128,8 +124,19 @@ public class Main2 {
 
         List<Cuenta> cuentas = accDao.findAll();
         long cuentaId = cuentas.get(0).getId();
-        Movimientos movDummy = new Movimientos(1, "Retiro", "Aprovado", LocalDate.now(), LocalTime.now(), cuentaId);
-
+        LocalDate dateNow = LocalDate.now();
+        LocalTime localTime = LocalTime.now();
+        Movimientos movDummy = new Movimientos( );
+        movDummy.setId(1);
+        movDummy.setTipoMovimiento("Retiro");
+        movDummy.setEstado("Rechazado");
+        movDummy.setFecha(dateNow);
+        movDummy.setHora(localTime);
+        movDummy.setCuentaId(cuentaId);
         movDao.save(movDummy);
+        movDao.save(movDummy);
+
+
+
     }
 }
