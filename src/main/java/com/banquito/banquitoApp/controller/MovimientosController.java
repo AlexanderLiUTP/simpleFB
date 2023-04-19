@@ -4,14 +4,15 @@ import com.banquito.banquitoApp.exceptions.SQLQueryException;
 import com.banquito.banquitoApp.models.productos.Movimientos;
 import com.banquito.banquitoApp.utils.dao.MovimientoDao;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
+@Configuration
 public class MovimientosController {
     MovimientoDao dao = new MovimientoDao();
 
-    @Bean
     @Scope("Singleton")
     public MovimientosController MovimientosController(){
         return new MovimientosController();
@@ -26,8 +27,10 @@ public class MovimientosController {
         return dao.findById(movimientoId).get();
     }
 
-    public void createMovimientos(Movimientos movimiento){
-        dao.save(movimiento);
+    public void createMovimientos(Movimientos movimiento)throws SQLQueryException{
+        if(!dao.save(movimiento)){
+            throw new SQLQueryException();
+        }    
     }
 
     public void editMovimientos(Movimientos movimiento) throws SQLQueryException {
@@ -36,7 +39,9 @@ public class MovimientosController {
         }
     }
 
-    public void deleteMovimientos(long movimientoId){
-        dao.delete(movimientoId);
+    public void deleteMovimientos(long movimientoId)throws SQLQueryException{
+        if(!dao.delete(movimientoId)){
+            throw new SQLQueryException();
+        }
     }
 }

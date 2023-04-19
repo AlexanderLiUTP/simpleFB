@@ -3,15 +3,12 @@ package com.banquito.banquitoApp.services;
 import com.banquito.banquitoApp.controller.ClienteController;
 import com.banquito.banquitoApp.exceptions.SQLQueryException;
 import com.banquito.banquitoApp.models.personas.Cliente;
-import com.banquito.banquitoApp.models.productos.Cuenta;
 import com.banquito.banquitoApp.utils.mapper.ClienteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,10 +28,10 @@ public ClienteServices(ClienteController clienteController){
 @GetMapping("")
     public ResponseEntity<?> getClientesService(){
     Map<String,Object> map = new LinkedHashMap<String,Object>();
-    List<Cliente> listaCuentas = clienteController.getAll();
+    List<Cliente> listaClientes = clienteController.getAll();
         map.put("timestamp", new Timestamp(System.currentTimeMillis()));
         map.put("status", 200);
-        map.put("data", listaCuentas);
+        map.put("data", listaClientes);
         return new ResponseEntity<>(map, HttpStatus.OK);
 }
 

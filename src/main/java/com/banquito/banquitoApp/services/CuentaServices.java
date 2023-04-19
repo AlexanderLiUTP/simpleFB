@@ -2,16 +2,13 @@ package com.banquito.banquitoApp.services;
 
 import com.banquito.banquitoApp.controller.CuentaController;
 import com.banquito.banquitoApp.exceptions.SQLQueryException;
-import com.banquito.banquitoApp.models.personas.Cliente;
 import com.banquito.banquitoApp.models.productos.Cuenta;
 import com.banquito.banquitoApp.utils.mapper.CuentaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,7 +22,8 @@ private CuentaMapper mapper;
 @Autowired
 public CuentaServices(CuentaController cuentaController){
     this.cuentaController = cuentaController;
-    this.mapper = new CuentaMapper();}
+    this.mapper = new CuentaMapper();
+    }
 
 @GetMapping("")
     public ResponseEntity<?> getCuentasService(){
