@@ -8,7 +8,7 @@ public interface CrudDao <T extends Serializable,K>{
     boolean save(T model);
     Optional<T> findById(K id);
     List<T> findAll();
-    T update(T model);
+    boolean update(T model);
     boolean delete(Long id);
     void deleteAll();
 }

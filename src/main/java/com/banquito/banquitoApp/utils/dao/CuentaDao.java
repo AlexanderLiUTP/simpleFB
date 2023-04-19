@@ -75,7 +75,8 @@ public class CuentaDao implements CrudDao<Cuenta, Long> {
     }
 
     @Override
-    public Cuenta update(Cuenta model) {
+    public boolean update(Cuenta model) {
+        boolean completed = true;
         String updateCuentaQuery = "UPDATE CUENTAS SET TIPO_CUENTA = ? , BALANCE = ? , MOV_INTEREST = ? , MOV_MANTENIMIENTO = ? WHERE ID_CUENTA = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(updateCuentaQuery)){
             preparedStatement.setString(1,model.getTipoCuenta().name());
@@ -86,9 +87,10 @@ public class CuentaDao implements CrudDao<Cuenta, Long> {
             preparedStatement.executeUpdate();
         }catch (SQLException e ){
             e.printStackTrace();
+            return !completed;
         }
         //NOTE: This is actually not a good practice since the data could be manipulated by a trigger.
-        return model;
+        return completed;
     }
 
     @Override

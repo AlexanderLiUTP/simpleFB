@@ -7,6 +7,7 @@ import com.banquito.banquitoApp.models.productos.Cuenta;
 import com.banquito.banquitoApp.utils.mapper.ClienteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,24 +50,61 @@ public ResponseEntity<?> getCliente(@PathVariable("cedula") long cedula){
 
 @PostMapping("")
 @ResponseBody
-public ResponseEntity<?> createCliente(@RequestBody Cuenta cliente){
+public ResponseEntity<?> createCliente(@RequestBody Map<String, Object> clienteJSON){
     Map<String,Object> map = new LinkedHashMap<String, Object>();
-    System.out.println(cliente);
-    //System.out.println(mapper.fromJSON(cliente));
-    return new ResponseEntity<>(map, HttpStatus.CREATED);
-//    try{
-//       clienteController.createCliente(cliente);
-//        map.put("timestamp", new Timestamp(System.currentTimeMillis()));
-//        map.put("status", 201);
-//        map.put("message", "Datos guardados exitosamente");
-//        return new ResponseEntity<>(map, HttpStatus.CREATED);
-//
-//    }catch(SQLQueryException ex){
-//        map.put("timestamp", new Timestamp(System.currentTimeMillis()));
-//        map.put("status", 400);
-//        map.put("error", "BAD REQUEST");
-//        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
-//    }
+    Cliente cliente = mapper.fromJSON(clienteJSON);
+    try{
+       clienteController.createCliente(cliente);
+        map.put("timestamp", new Timestamp(System.currentTimeMillis()));
+        map.put("status", 201);
+        map.put("message", "Datos guardados exitosamente");
+        return new ResponseEntity<>(map, HttpStatus.CREATED);
+    }catch(SQLQueryException ex){
+        map.put("timestamp", new Timestamp(System.currentTimeMillis()));
+        map.put("status", 400);
+        map.put("error", "BAD REQUEST");
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
 
 }
+
+    @PutMapping(value="/{cedula}")
+    public ResponseEntity<?> createCliente(@PathVariable("cedula") Integer cedula, @RequestBody(required = true) Map<String, Object> clienteJSON){
+        Map<String,Object> map = new LinkedHashMap<String, Object>();
+        Cliente cliente = clienteController.getCliente(cedula);
+        Cliente clienteEdit = mapper.fromJSON(clienteJSON);
+        clienteEdit.setCedula(cedula);
+        try{
+            clienteController.editCliente(clienteEdit);
+            map.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            map.put("status", 200);
+            map.put("message", "Solicitud completada");
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }catch(SQLQueryException ex){
+            map.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            map.put("status", 400);
+            map.put("error", "BAD REQUEST");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping(value="/{cedula}")
+    public ResponseEntity<?> createCliente(@PathVariable("cedula") Integer cedula){
+        Map<String,Object> map = new LinkedHashMap<String, Object>();
+        try{
+            clienteController.deleteCliente(cedula);
+            map.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            map.put("status", 200);
+            map.put("message", "Solicitud completada");
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }catch(SQLQueryException ex){
+            map.put("timestamp", new Timestamp(System.currentTimeMillis()));
+            map.put("status", 400);
+            map.put("error", "BAD REQUEST");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }

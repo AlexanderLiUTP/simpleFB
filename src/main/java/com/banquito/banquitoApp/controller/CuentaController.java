@@ -1,5 +1,6 @@
 package com.banquito.banquitoApp.controller;
 
+import com.banquito.banquitoApp.exceptions.SQLQueryException;
 import com.banquito.banquitoApp.models.productos.Cuenta;
 import com.banquito.banquitoApp.utils.dao.CuentaDao;
 
@@ -20,8 +21,10 @@ public class CuentaController {
         dao.save(cuenta);
     }
 
-    public Cuenta editCuenta(Cuenta cuenta){
-        return dao.update(cuenta);
+    public void editCuenta(Cuenta cuenta) throws SQLQueryException {
+        if(!dao.update(cuenta)){
+            throw new SQLQueryException();
+        }
     }
 
     public void deleteCuenta(long cuentaId){

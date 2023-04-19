@@ -35,11 +35,16 @@ public class ClienteController {
         }
     }
 
-    public Cliente editCliente(Cliente cliente){
-        return dao.update(cliente);
+    public void editCliente(Cliente cliente) throws SQLQueryException {
+        if(!dao.update(cliente)){
+            throw new SQLQueryException();
+        }
     }
 
-    public void deleteCliente(long cedula){
-        dao.delete(cedula);
+    public void deleteCliente(long cedula) throws SQLQueryException{
+       if (!dao.delete(cedula)){
+           throw new SQLQueryException();
+
+       }
     }
 }

@@ -72,7 +72,8 @@ public class ClienteDao implements CrudDao<Cliente, Long>{
     }
 
     @Override
-    public Cliente update(Cliente model) {
+    public boolean update(Cliente model) {
+        boolean completed = true;
         String updateClienteQuery = "UPDATE CLIENTES SET NOMBRE = ? , APELLIDO = ? , FECHA_NACIMIENTO = ?, estatusTrabajo = ?, nivelRiesgo = ? WHERE CEDULA = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(updateClienteQuery)){
             preparedStatement.setString(1,model.getNombre());
@@ -86,9 +87,10 @@ public class ClienteDao implements CrudDao<Cliente, Long>{
             preparedStatement.executeUpdate();
         }catch (SQLException e ){
             e.printStackTrace();
+            return !completed;
         }
         //NOTE: This is actually not a good practice since the data could be manipulated by a trigger.
-        return model;
+        return completed;
     }
 
     @Override

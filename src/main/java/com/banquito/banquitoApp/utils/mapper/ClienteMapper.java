@@ -27,7 +27,9 @@ public class ClienteMapper implements BaseMapper<Cliente>{
 
     public Cliente fromJSON(Map<String, Object> json){
         Cliente cliente = new Cliente();
-        cliente.setCedula((int) json.get("cedula"));
+       if (json.get("cedula") != null){
+           cliente.setCedula((int) json.get("cedula"));
+       }
         cliente.setNombre((String) json.get("nombre"));
         cliente.setApellido((String) json.get("apellido"));
         cliente.setFechaNacimiento(LocalDate.parse((CharSequence) json.get("fechaNacimiento")));

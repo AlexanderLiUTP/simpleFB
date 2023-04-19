@@ -73,7 +73,9 @@ public class MovimientoDao implements CrudDao<Movimientos, Long>{
     }
 
     @Override
-    public Movimientos update(Movimientos model) {
+    public boolean update(Movimientos model) {
+        boolean completed = true;
+
         String updateMovimientosQuery = "UPDATE MOVIMIENTOS SET TIPO_MOVIMIENTO = ? , ESTADO = ? , FECHA = ?, HORA = ?, ID_CUENTA=? WHERE ID_MOVIMIENTO = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(updateMovimientosQuery)){
             preparedStatement.setString(1,model.getTipoMovimiento());
@@ -85,9 +87,11 @@ public class MovimientoDao implements CrudDao<Movimientos, Long>{
             preparedStatement.executeUpdate();
         }catch (SQLException e ){
             e.printStackTrace();
+            return !completed;
+
         }
         //NOTE: This is actually not a good practice since the data could be manipulated by a trigger.
-        return model;
+        return completed;
     }
 
     @Override
