@@ -3,11 +3,20 @@ package com.banquito.banquitoApp.controller;
 import com.banquito.banquitoApp.exceptions.SQLQueryException;
 import com.banquito.banquitoApp.models.productos.Movimientos;
 import com.banquito.banquitoApp.utils.dao.MovimientoDao;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
 public class MovimientosController {
     MovimientoDao dao = new MovimientoDao();
+
+    @Bean
+    @Scope("Singleton")
+    public MovimientosController MovimientosController(){
+        return new MovimientosController();
+    }
+
     public List<Movimientos> getAll(){
         List<Movimientos> movimientos = dao.findAll();
         return  movimientos;

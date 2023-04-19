@@ -6,8 +6,6 @@ import com.banquito.banquitoApp.utils.dao.ClienteDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
 import java.util.List;

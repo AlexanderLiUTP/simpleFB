@@ -29,7 +29,7 @@ public ClienteServices(ClienteController clienteController){
     this.mapper = new ClienteMapper();}
 
 @GetMapping("")
-    public ResponseEntity<?> getClientes(){
+    public ResponseEntity<?> getClientesService(){
     Map<String,Object> map = new LinkedHashMap<String,Object>();
     List<Cliente> listaCuentas = clienteController.getAll();
         map.put("timestamp", new Timestamp(System.currentTimeMillis()));
@@ -39,7 +39,7 @@ public ClienteServices(ClienteController clienteController){
 }
 
 @GetMapping("/{cedula}")
-public ResponseEntity<?> getCliente(@PathVariable("cedula") long cedula){
+public ResponseEntity<?> getClienteService(@PathVariable("cedula") long cedula){
     Map<String,Object> map = new LinkedHashMap<String,Object>();
     Cliente cliente = clienteController.getCliente(cedula);
     map.put("timestamp", new Timestamp(System.currentTimeMillis()));
@@ -50,7 +50,7 @@ public ResponseEntity<?> getCliente(@PathVariable("cedula") long cedula){
 
 @PostMapping("")
 @ResponseBody
-public ResponseEntity<?> createCliente(@RequestBody Map<String, Object> clienteJSON){
+public ResponseEntity<?> createClienteService(@RequestBody Map<String, Object> clienteJSON){
     Map<String,Object> map = new LinkedHashMap<String, Object>();
     Cliente cliente = mapper.fromJSON(clienteJSON);
     try{
@@ -69,7 +69,7 @@ public ResponseEntity<?> createCliente(@RequestBody Map<String, Object> clienteJ
 }
 
     @PutMapping(value="/{cedula}")
-    public ResponseEntity<?> createCliente(@PathVariable("cedula") Integer cedula, @RequestBody(required = true) Map<String, Object> clienteJSON){
+    public ResponseEntity<?> editClienteService(@PathVariable("cedula") Integer cedula, @RequestBody(required = true) Map<String, Object> clienteJSON){
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         Cliente cliente = clienteController.getCliente(cedula);
         Cliente clienteEdit = mapper.fromJSON(clienteJSON);
@@ -90,7 +90,7 @@ public ResponseEntity<?> createCliente(@RequestBody Map<String, Object> clienteJ
     }
 
     @DeleteMapping(value="/{cedula}")
-    public ResponseEntity<?> createCliente(@PathVariable("cedula") Integer cedula){
+    public ResponseEntity<?> deleteClienteService(@PathVariable("cedula") Integer cedula){
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         try{
             clienteController.deleteCliente(cedula);
