@@ -44,7 +44,7 @@ public class CuentaDao implements CrudDao<Cuenta, Long> {
 
     @Override
     public Optional<Cuenta> findById(Long id) {
-        String selectByIdQuery = "SELECT * FROM CUENTASS WHERE ID_CUENTA = ?";
+        String selectByIdQuery = "SELECT * FROM CUENTAS WHERE ID_CUENTA = ?";
         Cuenta cuenta = null;
         try(PreparedStatement preparedStatement = connection.prepareStatement(selectByIdQuery)){
             preparedStatement.setLong(1,id);
@@ -115,6 +115,22 @@ public class CuentaDao implements CrudDao<Cuenta, Long> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Cuenta> findAllFromClient(long cedula){
+        List<Cuenta> cuentas = new ArrayList<>();
+        String selectAllQuery = "SELECT * FROM CUENTAS where cuentas.CEDULA_TITULAR = ? ";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(selectAllQuery)){
+            preparedStatement.setLong(1,cedula);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Cuenta cuenta = mapper.toModel(resultSet);
+                cuentas.add(cuenta);
+            }
+        }catch (SQLException e ){
+            e.printStackTrace();
+        }
+        return cuentas;
     }
 
 }

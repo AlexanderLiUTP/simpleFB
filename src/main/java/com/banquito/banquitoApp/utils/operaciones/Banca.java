@@ -4,6 +4,9 @@ import com.banquito.banquitoApp.exceptions.NegativeInputFunds;
 import com.banquito.banquitoApp.exceptions.NotEnoughFundsException;
 import com.banquito.banquitoApp.models.personas.Cliente;
 import com.banquito.banquitoApp.models.productos.*;
+import com.banquito.banquitoApp.utils.dao.CuentaDao;
+import com.banquito.banquitoApp.utils.dao.MovimientoDao;
+import com.banquito.banquitoApp.utils.operaciones.TipoCuenta;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -12,6 +15,8 @@ import java.util.TreeMap;
 
 public class Banca implements IOperaciones {
     private int uniqueId =1;
+    private CuentaDao cuentaDao = new CuentaDao();
+    private MovimientoDao movimientosDao = new MovimientoDao();
 
     //private BiPredicate<Double, Double> fondos = (fondos, balance) -> fondos > balance;
     @Override
@@ -31,6 +36,7 @@ public class Banca implements IOperaciones {
 
         }
         cuenta.setBalance(cuenta.getBalance() - cantidad);
+        cuentaDao.update(cuenta);
         operacionesMovimiento(cuenta);
         agregarMovimientos("Retiro", "Aceptado", cuenta );
         return true;
@@ -40,6 +46,7 @@ public class Banca implements IOperaciones {
     public <T extends Cuenta> boolean depositar(T cuenta, double cantidad) throws NegativeInputFunds{
         if (cantidad > 0){
             cuenta.setBalance(cuenta.getBalance() + cantidad);
+            cuentaDao.update(cuenta);
             operacionesMovimiento(cuenta);
             agregarMovimientos("Deposito", "Aceptado", cuenta );
 
@@ -89,6 +96,7 @@ public class Banca implements IOperaciones {
         historial.setFecha(dateTimeNow.toLocalDate());
         historial.setHora(dateTimeNow.toLocalTime());
         historial.setCuentaId(cuenta.getId());
+        movimientosDao.update(historial);
         Map<LocalDateTime, Movimientos> entryMovimientos = new TreeMap<>();
         entryMovimientos.put(dateTimeNow, historial);
         cuenta.setMovimientos(entryMovimientos);
@@ -112,7 +120,7 @@ public class Banca implements IOperaciones {
             case Ahorro -> {
                 CuentaAhorro nuevaCuenta = new CuentaAhorro(generarId(),montoInicial, titular.getCedula());
                 titular.setCuentas(nuevaCuenta);
-
+                cuentaDao.save(nuevaCuenta);
                 return true;
             }
             case Corriente -> {
@@ -122,6 +130,7 @@ public class Banca implements IOperaciones {
                 }
                 CuentaCorriente nuevaCuenta = new CuentaCorriente(generarId(),montoInicial, titular.getCedula());
                 titular.setCuentas(nuevaCuenta);
+                cuentaDao.save(nuevaCuenta);
                 return true;
             }
             case PlazoFijo -> {
@@ -131,7 +140,7 @@ public class Banca implements IOperaciones {
                 }
                 CuentaPlazoFijo nuevaCuenta = new CuentaPlazoFijo(generarId(), montoInicial,titular.getCedula());
                 titular.setCuentas(nuevaCuenta);
-
+                cuentaDao.save(nuevaCuenta);
                 return true;
             }
         }
@@ -176,6 +185,7 @@ public class Banca implements IOperaciones {
         cobrarMantenimiento(cuenta);
         cuenta.aumentarMovMan();
         cuenta.aumentarMovInterest();
+        cuentaDao.update(cuenta);
     }
 
     private int generarId(){
