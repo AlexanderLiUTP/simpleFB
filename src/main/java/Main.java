@@ -15,52 +15,18 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-//
-//        Cliente titular = crearCliente();
-//        Banca sucursal = new Banca();
-//        menuBanquito(titular, sucursal);
+
+       Cliente titular = crearCliente();
+       Banca sucursal = new Banca();
+       menuBanquito(titular, sucursal);
 
        // testOperaciones();
-    /*        try {
-
-            sucursal.depositar(juan.getCuentas().get(0), 100);
-        }catch (NegativeInputFunds e){
-            System.out.println(e.getMessage());
-        }
-
-
-        try {
-
-            sucursal.depositar(juan.getCuentas().get(0), -200);
-        }catch (NegativeInputFunds e){
-            System.out.println(e.getMessage());
-        }
-
-        sucursal.abirCuenta(juan,TipoCuenta.PlazoFijo, 500);
-
-        for (int i= 0; i<10; i++){
-            try {
-
-                sucursal.depositar(juan.getCuenta(1), 10);
-            } catch (NegativeInputFunds e){
-                System.out.println(e.getMessage());
-            }
-            System.out.println("Balance actual: " +juan.getCuenta(1).getBalance());
-        }
-
-        sucursal.transferenciaEntrecuentas(juan.getCuenta(1), juan.getCuenta(2), 200 );
-
-        juan.getCuentas().forEach(System.out::println);
-
-        juan.getCuenta(1).getHistorial().forEach((fecha, movimiento) -> System.out.println(movimiento));
-*/
+    
 
 
     }
 
-    private static void printMsg(String msg){
-        System.out.println(msg);
-    }
+    
 
     private static void testOperaciones(){
         Banca sucursal = new Banca();
@@ -244,7 +210,7 @@ public class Main {
         String clientName = bf.readLine();
         System.out.println("¿Cuál es su apellido?");
         String clientLastName = bf.readLine();
-        System.out.println("Cedula");
+        System.out.println("Cedula (sin guiones)");
         long cedula = Long.parseLong(bf.readLine());
         System.out.println("Fecha de naciminto (aaaa-mm-dd)");
         String dob = bf.readLine();
